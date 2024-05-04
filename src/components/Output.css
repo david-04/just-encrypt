@@ -1,0 +1,31 @@
+.Output {
+    width: 100%;
+    margin-bottom: 1em;
+}
+
+.Output>div {
+    width: 100%;
+}
+
+.Output>div:first-child {
+    margin-bottom: 0.5em;
+}
+
+.Output>div:first-child {
+    margin-top: 2em;
+    margin-bottom: 0.5em;
+}
+
+.Output>div:not(:first-child) {
+    word-wrap: break-word;
+    border: 1px solid #767676;
+    padding: 0.25em;
+    box-sizing: border-box
+}
+
+.Output>div>textarea {
+    width: 100%;
+    min-width: 100%;
+    font-size: inherit;
+    box-sizing: border-box;
+}

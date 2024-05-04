@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="Layer_1"
+   style="enable-background:new 0 0 67 67"
+   xml:space="preserve"
+   viewBox="0 0 67 67"
+   version="1.1"
+   y="0px"
+   x="0px"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"><defs
+   id="defs1" />&#10;  <rect
+   style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:2.66667;stroke-linecap:round;stroke-miterlimit:0"
+   id="rect1"
+   width="73.390244"
+   height="71.306137"
+   x="-3.7216146"
+   y="-1.0420521"
+   ry="0" /><path
+   id="path3357"
+   opacity="0.98"
+   stroke-width="0"
+   fill="#efe90d"
+   d="m 33.224004,6.728413 c -7.911252,0.199139 -14.21851,6.638688 -14.21851,14.599293 v 6.207315 h -3.826337 v 21.109872 h 0.0058 c -0.0058,0.152467 -0.0058,0.30536 -0.0058,0.459381 0,6.130608 4.491007,11.064539 10.07297,11.064539 h 16.688839 c 5.581965,0 10.078467,-4.933931 10.078467,-11.064538 0,-0.153992 -0.0058,-0.306969 -0.01133,-0.459382 h 0.01133 V 27.535021 h -3.820836 v -6.207315 c 0,-4.370441 -1.90025,-8.281046 -4.923347,-10.952361 -2.57096,-2.271821 -5.953822,-3.647207 -9.670592,-3.647207 -0.126374,0 -0.255376,-0.0032 -0.380959,0 z m -0.06721,4.257711 c 0.09599,-0.0024 0.19478,0 0.291327,0 4.623385,-0.108014 9.167866,3.312473 10.112145,7.854478 0.160756,2.898003 0.251296,5.793943 0.302542,8.694693 H 23.370181 c -0.0049,-1.387072 -0.01133,-2.770842 -0.03919,-4.156951 -1.170281,-5.931274 3.778083,-12.250076 9.826483,-12.39222 z m 0.425773,24.268929 c 0.218136,0 0.438724,0.01704 0.661064,0.0504 2.371906,0.355801 4.008486,2.563814 3.652712,4.935582 -0.163822,1.092127 -0.727213,2.031942 -1.51258,2.689047 l 1.518219,9.518276 h -8.605204 l 1.512585,-9.51828 c -1.118925,-0.939703 -1.739683,-2.426754 -1.506946,-3.97769 0.322434,-2.149479 2.171471,-3.691753 4.280121,-3.697528 z M -7.2102598,-7.3784685 H 75.271662 V 75.103442 H -7.2102598 Z"
+   style="fill:#ffd000;fill-opacity:1" />&#10;<metadata
+   id="metadata1"><rdf:RDF><cc:Work><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><cc:license
+         rdf:resource="http://creativecommons.org/publicdomain/zero/1.0/" /><dc:publisher><cc:Agent
+           rdf:about="http://openclipart.org/"><dc:title>Openclipart</dc:title></cc:Agent></dc:publisher><dc:date>2013-06-18T15:52:15</dc:date><dc:description>A square padlock icon.</dc:description><dc:source>https://openclipart.org/detail/179408/padlock-square-by-pnoq-179408</dc:source><dc:creator><cc:Agent><dc:title>pnoq</dc:title></cc:Agent></dc:creator><dc:subject><rdf:Bag><rdf:li>button</rdf:li><rdf:li>cryptography</rdf:li><rdf:li>gnupg</rdf:li><rdf:li>gpg</rdf:li><rdf:li>homepage</rdf:li><rdf:li>icon</rdf:li><rdf:li>icons</rdf:li><rdf:li>padlock</rdf:li><rdf:li>public key</rdf:li><rdf:li>square</rdf:li><rdf:li>website</rdf:li></rdf:Bag></dc:subject></cc:Work><cc:License
+       rdf:about="http://creativecommons.org/publicdomain/zero/1.0/"><cc:permits
+         rdf:resource="http://creativecommons.org/ns#Reproduction" /><cc:permits
+         rdf:resource="http://creativecommons.org/ns#Distribution" /><cc:permits
+         rdf:resource="http://creativecommons.org/ns#DerivativeWorks" /></cc:License></rdf:RDF></metadata></svg>

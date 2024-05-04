@@ -1,0 +1,11 @@
+{
+    "name": "just-encrypt",
+    "version": "1.0.0",
+    "private": true,
+    "license": "MIT",
+    "swpm": "npm",
+    "dependencies": {
+        "preact": "^10.21.0"
+    },
+    "type": "module"
+}

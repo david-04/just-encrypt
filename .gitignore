@@ -1,0 +1,8 @@
+/node_modules
+/build/**/*.js
+/build/**/*.d.js
+/build/**/*.js.map
+/build/.tsbuildinfo
+/dist/*.js*
+/dist/*.css*
+/.vscode

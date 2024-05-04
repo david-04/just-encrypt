@@ -1,0 +1,26 @@
+.Keyboard {
+    width: 100%;
+    font-size: 1.715em;
+    margin-bottom: 1em;
+    margin-top: 0.75em;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: space-between;
+}
+
+.Keyboard>a:hover {
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+}
+
+.Keyboard>a>div {
+    width: 1.4em;
+    height: 1.4em;
+    /* margin-right: 0.211em;
+    margin-bottom: 0.211em; */
+    border: 1px solid silver;
+    text-align: center;
+    flex-grow: 2;
+}

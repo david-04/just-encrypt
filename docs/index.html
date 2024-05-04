@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web Crypto API Test</title>
+<style type="text/css">
+/* src/components/Application.css */
+html {
+  font-family: sans-serif;
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+body {
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+#app {
+  width: 100%;
+}
+#app > .Application {
+  width: 80%;
+  min-width: 19.9em;
+  max-width: 50em;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: sans-serif;
+  margin-top: 10vh;
+  font-size: 1.25rem;
+}
+#app > .Application > div:not(.Header) {
+  width: 100%;
+  margin-top: 2em;
+}
+
+/* src/components/Header.css */
+.Header {
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  font-size: 0.8rem;
+  opacity: 0.5;
+  z-index: 999;
+}
+.Header > .separator {
+  padding-left: 0.3em;
+  padding-right: 0.3em;
+}
+.Header > span > a {
+  text-decoration: none;
+}
+
+/* src/components/Input.css */
+.Input {
+  width: 100%;
+  margin-bottom: 1em;
+}
+.Input > div {
+  width: 100%;
+}
+.Input > div:first-child {
+  margin-bottom: 0.5em;
+}
+.Input > div > textarea {
+  width: 100%;
+  min-width: 100%;
+  min-height: 10em;
+  font-size: inherit;
+  box-sizing: border-box;
+  padding: 0.25em;
+}
+
+/* src/components/Output.css */
+.Output {
+  width: 100%;
+  margin-bottom: 1em;
+}
+.Output > div {
+  width: 100%;
+}
+.Output > div:first-child {
+  margin-bottom: 0.5em;
+}
+.Output > div:first-child {
+  margin-top: 2em;
+  margin-bottom: 0.5em;
+}
+.Output > div:not(:first-child) {
+  word-wrap: break-word;
+  border: 1px solid #767676;
+  padding: 0.25em;
+  box-sizing: border-box;
+}
+.Output > div > textarea {
+  width: 100%;
+  min-width: 100%;
+  font-size: inherit;
+  box-sizing: border-box;
+}
+
+/* src/components/PasswordField.css */
+.PasswordField {
+  width: 100%;
+  margin-bottom: 1em;
+}
+.PasswordField > div {
+  width: 100%;
+}
+.PasswordField > div:first-child {
+  margin-bottom: 0.5em;
+}
+.PasswordField > div > input {
+  width: 100%;
+  font-size: inherit;
+  box-sizing: border-box;
+}
+/*# sourceMappingURL=web-crypto-api-test.css.map */
+</style>
+<link rel="icon" href="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcKICAgaWQ9IkxheWVyXzEiCiAgIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDY3IDY3IgogICB4bWw6c3BhY2U9InByZXNlcnZlIgogICB2aWV3Qm94PSIwIDAgNjcgNjciCiAgIHZlcnNpb249IjEuMSIKICAgeT0iMHB4IgogICB4PSIwcHgiCiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgeG1sbnM6c3ZnPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIgogICB4bWxuczpjYz0iaHR0cDovL2NyZWF0aXZlY29tbW9ucy5vcmcvbnMjIgogICB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iPjxkZWZzCiAgIGlkPSJkZWZzMSIgLz4mIzEwOyAgPHJlY3QKICAgc3R5bGU9ImZpbGw6IzAwMDAwMDtmaWxsLW9wYWNpdHk6MTtzdHJva2U6bm9uZTtzdHJva2Utd2lkdGg6Mi42NjY2NztzdHJva2UtbGluZWNhcDpyb3VuZDtzdHJva2UtbWl0ZXJsaW1pdDowIgogICBpZD0icmVjdDEiCiAgIHdpZHRoPSI3My4zOTAyNDQiCiAgIGhlaWdodD0iNzEuMzA2MTM3IgogICB4PSItMy43MjE2MTQ2IgogICB5PSItMS4wNDIwNTIxIgogICByeT0iMCIgLz48cGF0aAogICBpZD0icGF0aDMzNTciCiAgIG9wYWNpdHk9IjAuOTgiCiAgIHN0cm9rZS13aWR0aD0iMCIKICAgZmlsbD0iI2VmZTkwZCIKICAgZD0ibSAzMy4yMjQwMDQsNi43Mjg0MTMgYyAtNy45MTEyNTIsMC4xOTkxMzkgLTE0LjIxODUxLDYuNjM4Njg4IC0xNC4yMTg1MSwxNC41OTkyOTMgdiA2LjIwNzMxNSBoIC0zLjgyNjMzNyB2IDIxLjEwOTg3MiBoIDAuMDA1OCBjIC0wLjAwNTgsMC4xNTI0NjcgLTAuMDA1OCwwLjMwNTM2IC0wLjAwNTgsMC40NTkzODEgMCw2LjEzMDYwOCA0LjQ5MTAwNywxMS4wNjQ1MzkgMTAuMDcyOTcsMTEuMDY0NTM5IGggMTYuNjg4ODM5IGMgNS41ODE5NjUsMCAxMC4wNzg0NjcsLTQuOTMzOTMxIDEwLjA3ODQ2NywtMTEuMDY0NTM4IDAsLTAuMTUzOTkyIC0wLjAwNTgsLTAuMzA2OTY5IC0wLjAxMTMzLC0wLjQ1OTM4MiBoIDAuMDExMzMgViAyNy41MzUwMjEgaCAtMy44MjA4MzYgdiAtNi4yMDczMTUgYyAwLC00LjM3MDQ0MSAtMS45MDAyNSwtOC4yODEwNDYgLTQuOTIzMzQ3LC0xMC45NTIzNjEgLTIuNTcwOTYsLTIuMjcxODIxIC01Ljk1MzgyMiwtMy42NDcyMDcgLTkuNjcwNTkyLC0zLjY0NzIwNyAtMC4xMjYzNzQsMCAtMC4yNTUzNzYsLTAuMDAzMiAtMC4zODA5NTksMCB6IG0gLTAuMDY3MjEsNC4yNTc3MTEgYyAwLjA5NTk5LC0wLjAwMjQgMC4xOTQ3OCwwIDAuMjkxMzI3LDAgNC42MjMzODUsLTAuMTA4MDE0IDkuMTY3ODY2LDMuMzEyNDczIDEwLjExMjE0NSw3Ljg1NDQ3OCAwLjE2MDc1NiwyLjg5ODAwMyAwLjI1MTI5Niw1Ljc5Mzk0MyAwLjMwMjU0Miw4LjY5NDY5MyBIIDIzLjM3MDE4MSBjIC0wLjAwNDksLTEuMzg3MDcyIC0wLjAxMTMzLC0yLjc3MDg0MiAtMC4wMzkxOSwtNC4xNTY5NTEgLTEuMTcwMjgxLC01LjkzMTI3NCAzLjc3ODA4MywtMTIuMjUwMDc2IDkuODI2NDgzLC0xMi4zOTIyMiB6IG0gMC40MjU3NzMsMjQuMjY4OTI5IGMgMC4yMTgxMzYsMCAwLjQzODcyNCwwLjAxNzA0IDAuNjYxMDY0LDAuMDUwNCAyLjM3MTkwNiwwLjM1NTgwMSA0LjAwODQ4NiwyLjU2MzgxNCAzLjY1MjcxMiw0LjkzNTU4MiAtMC4xNjM4MjIsMS4wOTIxMjcgLTAuNzI3MjEzLDIuMDMxOTQyIC0xLjUxMjU4LDIuNjg5MDQ3IGwgMS41MTgyMTksOS41MTgyNzYgaCAtOC42MDUyMDQgbCAxLjUxMjU4NSwtOS41MTgyOCBjIC0xLjExODkyNSwtMC45Mzk3MDMgLTEuNzM5NjgzLC0yLjQyNjc1NCAtMS41MDY5NDYsLTMuOTc3NjkgMC4zMjI0MzQsLTIuMTQ5NDc5IDIuMTcxNDcxLC0zLjY5MTc1MyA0LjI4MDEyMSwtMy42OTc1MjggeiBNIC03LjIxMDI1OTgsLTcuMzc4NDY4NSBIIDc1LjI3MTY2MiBWIDc1LjEwMzQ0MiBIIC03LjIxMDI1OTggWiIKICAgc3R5bGU9ImZpbGw6I2ZmZDAwMDtmaWxsLW9wYWNpdHk6MSIgLz4mIzEwOzxtZXRhZGF0YQogICBpZD0ibWV0YWRhdGExIj48cmRmOlJERj48Y2M6V29yaz48ZGM6Zm9ybWF0PmltYWdlL3N2Zyt4bWw8L2RjOmZvcm1hdD48ZGM6dHlwZQogICAgICAgICByZGY6cmVzb3VyY2U9Imh0dHA6Ly9wdXJsLm9yZy9kYy9kY21pdHlwZS9TdGlsbEltYWdlIiAvPjxjYzpsaWNlbnNlCiAgICAgICAgIHJkZjpyZXNvdXJjZT0iaHR0cDovL2NyZWF0aXZlY29tbW9ucy5vcmcvcHVibGljZG9tYWluL3plcm8vMS4wLyIgLz48ZGM6cHVibGlzaGVyPjxjYzpBZ2VudAogICAgICAgICAgIHJkZjphYm91dD0iaHR0cDovL29wZW5jbGlwYXJ0Lm9yZy8iPjxkYzp0aXRsZT5PcGVuY2xpcGFydDwvZGM6dGl0bGU+PC9jYzpBZ2VudD48L2RjOnB1Ymxpc2hlcj48ZGM6ZGF0ZT4yMDEzLTA2LTE4VDE1OjUyOjE1PC9kYzpkYXRlPjxkYzpkZXNjcmlwdGlvbj5BIHNxdWFyZSBwYWRsb2NrIGljb24uPC9kYzpkZXNjcmlwdGlvbj48ZGM6c291cmNlPmh0dHBzOi8vb3BlbmNsaXBhcnQub3JnL2RldGFpbC8xNzk0MDgvcGFkbG9jay1zcXVhcmUtYnktcG5vcS0xNzk0MDg8L2RjOnNvdXJjZT48ZGM6Y3JlYXRvcj48Y2M6QWdlbnQ+PGRjOnRpdGxlPnBub3E8L2RjOnRpdGxlPjwvY2M6QWdlbnQ+PC9kYzpjcmVhdG9yPjxkYzpzdWJqZWN0PjxyZGY6QmFnPjxyZGY6bGk+YnV0dG9uPC9yZGY6bGk+PHJkZjpsaT5jcnlwdG9ncmFwaHk8L3JkZjpsaT48cmRmOmxpPmdudXBnPC9yZGY6bGk+PHJkZjpsaT5ncGc8L3JkZjpsaT48cmRmOmxpPmhvbWVwYWdlPC9yZGY6bGk+PHJkZjpsaT5pY29uPC9yZGY6bGk+PHJkZjpsaT5pY29uczwvcmRmOmxpPjxyZGY6bGk+cGFkbG9jazwvcmRmOmxpPjxyZGY6bGk+cHVibGljIGtleTwvcmRmOmxpPjxyZGY6bGk+c3F1YXJlPC9yZGY6bGk+PHJkZjpsaT53ZWJzaXRlPC9yZGY6bGk+PC9yZGY6QmFnPjwvZGM6c3ViamVjdD48L2NjOldvcms+PGNjOkxpY2Vuc2UKICAgICAgIHJkZjphYm91dD0iaHR0cDovL2NyZWF0aXZlY29tbW9ucy5vcmcvcHVibGljZG9tYWluL3plcm8vMS4wLyI+PGNjOnBlcm1pdHMKICAgICAgICAgcmRmOnJlc291cmNlPSJodHRwOi8vY3JlYXRpdmVjb21tb25zLm9yZy9ucyNSZXByb2R1Y3Rpb24iIC8+PGNjOnBlcm1pdHMKICAgICAgICAgcmRmOnJlc291cmNlPSJodHRwOi8vY3JlYXRpdmVjb21tb25zLm9yZy9ucyNEaXN0cmlidXRpb24iIC8+PGNjOnBlcm1pdHMKICAgICAgICAgcmRmOnJlc291cmNlPSJodHRwOi8vY3JlYXRpdmVjb21tb25zLm9yZy9ucyNEZXJpdmF0aXZlV29ya3MiIC8+PC9jYzpMaWNlbnNlPjwvcmRmOlJERj48L21ldGFkYXRhPjwvc3ZnPgo="/>
+</head>
+
+<body>
+    <div id="app" />
+<script type="text/javascript">
+var __defProp = Object.defineProperty;
+var __defProps = Object.defineProperties;
+var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
+var __getOwnPropSymbols = Object.getOwnPropertySymbols;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __propIsEnum = Object.prototype.propertyIsEnumerable;
+var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __spreadValues = (a2, b) => {
+  for (var prop in b || (b = {}))
+    if (__hasOwnProp.call(b, prop))
+      __defNormalProp(a2, prop, b[prop]);
+  if (__getOwnPropSymbols)
+    for (var prop of __getOwnPropSymbols(b)) {
+      if (__propIsEnum.call(b, prop))
+        __defNormalProp(a2, prop, b[prop]);
+    }
+  return a2;
+};
+var __spreadProps = (a2, b) => __defProps(a2, __getOwnPropDescs(b));
+var __publicField = (obj, key, value) => {
+  __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
+  return value;
+};
+var __async = (__this, __arguments, generator) => {
+  return new Promise((resolve, reject) => {
+    var fulfilled = (value) => {
+      try {
+        step(generator.next(value));
+      } catch (e2) {
+        reject(e2);
+      }
+    };
+    var rejected = (value) => {
+      try {
+        step(generator.throw(value));
+      } catch (e2) {
+        reject(e2);
+      }
+    };
+    var step = (x2) => x2.done ? resolve(x2.value) : Promise.resolve(x2.value).then(fulfilled, rejected);
+    step((generator = generator.apply(__this, __arguments)).next());
+  });
+};
+
+// node_modules/preact/dist/preact.module.js
+var n;
+var l;
+var u;
+var t;
+var i;
+var o;
+var r;
+var f;
+var e;
+var c;
+var s;
+var a;
+var h = {};
+var v = [];
+var p = /acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord|itera/i;
+var y = Array.isArray;
+function d(n2, l2) {
+  for (var u2 in l2)
+    n2[u2] = l2[u2];
+  return n2;
+}
+function _(n2) {
+  var l2 = n2.parentNode;
+  l2 && l2.removeChild(n2);
+}
+function g(l2, u2, t2) {
+  var i2, o2, r2, f2 = {};
+  for (r2 in u2)
+    "key" == r2 ? i2 = u2[r2] : "ref" == r2 ? o2 = u2[r2] : f2[r2] = u2[r2];
+  if (arguments.length > 2 && (f2.children = arguments.length > 3 ? n.call(arguments, 2) : t2), "function" == typeof l2 && null != l2.defaultProps)
+    for (r2 in l2.defaultProps)
+      void 0 === f2[r2] && (f2[r2] = l2.defaultProps[r2]);
+  return k(l2, f2, i2, o2, null);
+}
+function k(n2, t2, i2, o2, r2) {
+  var f2 = { type: n2, props: t2, key: i2, ref: o2, __k: null, __: null, __b: 0, __e: null, __d: void 0, __c: null, constructor: void 0, __v: null == r2 ? ++u : r2, __i: -1, __u: 0 };
+  return null == r2 && null != l.vnode && l.vnode(f2), f2;
+}
+function m(n2) {
+  return n2.children;
+}
+function w(n2, l2) {
+  this.props = n2, this.context = l2;
+}
+function C(n2, l2) {
+  if (null == l2)
+    return n2.__ ? C(n2.__, n2.__i + 1) : null;
+  for (var u2; l2 < n2.__k.length; l2++)
+    if (null != (u2 = n2.__k[l2]) && null != u2.__e)
+      return u2.__e;
+  return "function" == typeof n2.type ? C(n2) : null;
+}
+function x(n2) {
+  var l2, u2;
+  if (null != (n2 = n2.__) && null != n2.__c) {
+    for (n2.__e = n2.__c.base = null, l2 = 0; l2 < n2.__k.length; l2++)
+      if (null != (u2 = n2.__k[l2]) && null != u2.__e) {
+        n2.__e = n2.__c.base = u2.__e;
+        break;
+      }
+    return x(n2);
+  }
+}
+function P(n2) {
+  (!n2.__d && (n2.__d = true) && i.push(n2) && !S.__r++ || o !== l.debounceRendering) && ((o = l.debounceRendering) || r)(S);
+}
+function S() {
+  var n2, u2, t2, o2, r2, e2, c2, s2;
+  for (i.sort(f); n2 = i.shift(); )
+    n2.__d && (u2 = i.length, o2 = void 0, e2 = (r2 = (t2 = n2).__v).__e, c2 = [], s2 = [], t2.__P && ((o2 = d({}, r2)).__v = r2.__v + 1, l.vnode && l.vnode(o2), O(t2.__P, o2, r2, t2.__n, void 0 !== t2.__P.ownerSVGElement, 32 & r2.__u ? [e2] : null, c2, null == e2 ? C(r2) : e2, !!(32 & r2.__u), s2), o2.__v = r2.__v, o2.__.__k[o2.__i] = o2, j(c2, o2, s2), o2.__e != e2 && x(o2)), i.length > u2 && i.sort(f));
+  S.__r = 0;
+}
+function $(n2, l2, u2, t2, i2, o2, r2, f2, e2, c2, s2) {
+  var a2, p2, y2, d2, _2, g2 = t2 && t2.__k || v, k2 = l2.length;
+  for (u2.__d = e2, I(u2, l2, g2), e2 = u2.__d, a2 = 0; a2 < k2; a2++)
+    null != (y2 = u2.__k[a2]) && "boolean" != typeof y2 && "function" != typeof y2 && (p2 = -1 === y2.__i ? h : g2[y2.__i] || h, y2.__i = a2, O(n2, y2, p2, i2, o2, r2, f2, e2, c2, s2), d2 = y2.__e, y2.ref && p2.ref != y2.ref && (p2.ref && N(p2.ref, null, y2), s2.push(y2.ref, y2.__c || d2, y2)), null == _2 && null != d2 && (_2 = d2), 65536 & y2.__u || p2.__k === y2.__k ? (e2 && !e2.isConnected && (e2 = C(p2)), e2 = H(y2, e2, n2)) : "function" == typeof y2.type && void 0 !== y2.__d ? e2 = y2.__d : d2 && (e2 = d2.nextSibling), y2.__d = void 0, y2.__u &= -196609);
+  u2.__d = e2, u2.__e = _2;
+}
+function I(n2, l2, u2) {
+  var t2, i2, o2, r2, f2, e2 = l2.length, c2 = u2.length, s2 = c2, a2 = 0;
+  for (n2.__k = [], t2 = 0; t2 < e2; t2++)
+    r2 = t2 + a2, null != (i2 = n2.__k[t2] = null == (i2 = l2[t2]) || "boolean" == typeof i2 || "function" == typeof i2 ? null : "string" == typeof i2 || "number" == typeof i2 || "bigint" == typeof i2 || i2.constructor == String ? k(null, i2, null, null, null) : y(i2) ? k(m, { children: i2 }, null, null, null) : void 0 === i2.constructor && i2.__b > 0 ? k(i2.type, i2.props, i2.key, i2.ref ? i2.ref : null, i2.__v) : i2) ? (i2.__ = n2, i2.__b = n2.__b + 1, f2 = A(i2, u2, r2, s2), i2.__i = f2, o2 = null, -1 !== f2 && (s2--, (o2 = u2[f2]) && (o2.__u |= 131072)), null == o2 || null === o2.__v ? (-1 == f2 && a2--, "function" != typeof i2.type && (i2.__u |= 65536)) : f2 !== r2 && (f2 === r2 + 1 ? a2++ : f2 > r2 ? s2 > e2 - r2 ? a2 += f2 - r2 : a2-- : f2 < r2 ? f2 == r2 - 1 && (a2 = f2 - r2) : a2 = 0, f2 !== t2 + a2 && (i2.__u |= 65536))) : (o2 = u2[r2]) && null == o2.key && o2.__e && 0 == (131072 & o2.__u) && (o2.__e == n2.__d && (n2.__d = C(o2)), V(o2, o2, false), u2[r2] = null, s2--);
+  if (s2)
+    for (t2 = 0; t2 < c2; t2++)
+      null != (o2 = u2[t2]) && 0 == (131072 & o2.__u) && (o2.__e == n2.__d && (n2.__d = C(o2)), V(o2, o2));
+}
+function H(n2, l2, u2) {
+  var t2, i2;
+  if ("function" == typeof n2.type) {
+    for (t2 = n2.__k, i2 = 0; t2 && i2 < t2.length; i2++)
+      t2[i2] && (t2[i2].__ = n2, l2 = H(t2[i2], l2, u2));
+    return l2;
+  }
+  n2.__e != l2 && (u2.insertBefore(n2.__e, l2 || null), l2 = n2.__e);
+  do {
+    l2 = l2 && l2.nextSibling;
+  } while (null != l2 && 8 === l2.nodeType);
+  return l2;
+}
+function A(n2, l2, u2, t2) {
+  var i2 = n2.key, o2 = n2.type, r2 = u2 - 1, f2 = u2 + 1, e2 = l2[u2];
+  if (null === e2 || e2 && i2 == e2.key && o2 === e2.type && 0 == (131072 & e2.__u))
+    return u2;
+  if (t2 > (null != e2 && 0 == (131072 & e2.__u) ? 1 : 0))
+    for (; r2 >= 0 || f2 < l2.length; ) {
+      if (r2 >= 0) {
+        if ((e2 = l2[r2]) && 0 == (131072 & e2.__u) && i2 == e2.key && o2 === e2.type)
+          return r2;
+        r2--;
+      }
+      if (f2 < l2.length) {
+        if ((e2 = l2[f2]) && 0 == (131072 & e2.__u) && i2 == e2.key && o2 === e2.type)
+          return f2;
+        f2++;
+      }
+    }
+  return -1;
+}
+function F(n2, l2, u2) {
+  "-" === l2[0] ? n2.setProperty(l2, null == u2 ? "" : u2) : n2[l2] = null == u2 ? "" : "number" != typeof u2 || p.test(l2) ? u2 : u2 + "px";
+}
+function L(n2, l2, u2, t2, i2) {
+  var o2;
+  n:
+    if ("style" === l2)
+      if ("string" == typeof u2)
+        n2.style.cssText = u2;
+      else {
+        if ("string" == typeof t2 && (n2.style.cssText = t2 = ""), t2)
+          for (l2 in t2)
+            u2 && l2 in u2 || F(n2.style, l2, "");
+        if (u2)
+          for (l2 in u2)
+            t2 && u2[l2] === t2[l2] || F(n2.style, l2, u2[l2]);
+      }
+    else if ("o" === l2[0] && "n" === l2[1])
+      o2 = l2 !== (l2 = l2.replace(/(PointerCapture)$|Capture$/i, "$1")), l2 = l2.toLowerCase() in n2 || "onFocusOut" === l2 || "onFocusIn" === l2 ? l2.toLowerCase().slice(2) : l2.slice(2), n2.l || (n2.l = {}), n2.l[l2 + o2] = u2, u2 ? t2 ? u2.u = t2.u : (u2.u = e, n2.addEventListener(l2, o2 ? s : c, o2)) : n2.removeEventListener(l2, o2 ? s : c, o2);
+    else {
+      if (i2)
+        l2 = l2.replace(/xlink(H|:h)/, "h").replace(/sName$/, "s");
+      else if ("width" != l2 && "height" != l2 && "href" != l2 && "list" != l2 && "form" != l2 && "tabIndex" != l2 && "download" != l2 && "rowSpan" != l2 && "colSpan" != l2 && "role" != l2 && l2 in n2)
+        try {
+          n2[l2] = null == u2 ? "" : u2;
+          break n;
+        } catch (n3) {
+        }
+      "function" == typeof u2 || (null == u2 || false === u2 && "-" !== l2[4] ? n2.removeAttribute(l2) : n2.setAttribute(l2, u2));
+    }
+}
+function M(n2) {
+  return function(u2) {
+    if (this.l) {
+      var t2 = this.l[u2.type + n2];
+      if (null == u2.t)
+        u2.t = e++;
+      else if (u2.t < t2.u)
+        return;
+      return t2(l.event ? l.event(u2) : u2);
+    }
+  };
+}
+function O(n2, u2, t2, i2, o2, r2, f2, e2, c2, s2) {
+  var a2, h2, v2, p2, _2, g2, k2, b, C2, x2, P2, S2, I2, H2, T, A2 = u2.type;
+  if (void 0 !== u2.constructor)
+    return null;
+  128 & t2.__u && (c2 = !!(32 & t2.__u), r2 = [e2 = u2.__e = t2.__e]), (a2 = l.__b) && a2(u2);
+  n:
+    if ("function" == typeof A2)
+      try {
+        if (b = u2.props, C2 = (a2 = A2.contextType) && i2[a2.__c], x2 = a2 ? C2 ? C2.props.value : a2.__ : i2, t2.__c ? k2 = (h2 = u2.__c = t2.__c).__ = h2.__E : ("prototype" in A2 && A2.prototype.render ? u2.__c = h2 = new A2(b, x2) : (u2.__c = h2 = new w(b, x2), h2.constructor = A2, h2.render = q), C2 && C2.sub(h2), h2.props = b, h2.state || (h2.state = {}), h2.context = x2, h2.__n = i2, v2 = h2.__d = true, h2.__h = [], h2._sb = []), null == h2.__s && (h2.__s = h2.state), null != A2.getDerivedStateFromProps && (h2.__s == h2.state && (h2.__s = d({}, h2.__s)), d(h2.__s, A2.getDerivedStateFromProps(b, h2.__s))), p2 = h2.props, _2 = h2.state, h2.__v = u2, v2)
+          null == A2.getDerivedStateFromProps && null != h2.componentWillMount && h2.componentWillMount(), null != h2.componentDidMount && h2.__h.push(h2.componentDidMount);
+        else {
+          if (null == A2.getDerivedStateFromProps && b !== p2 && null != h2.componentWillReceiveProps && h2.componentWillReceiveProps(b, x2), !h2.__e && (null != h2.shouldComponentUpdate && false === h2.shouldComponentUpdate(b, h2.__s, x2) || u2.__v === t2.__v)) {
+            for (u2.__v !== t2.__v && (h2.props = b, h2.state = h2.__s, h2.__d = false), u2.__e = t2.__e, u2.__k = t2.__k, u2.__k.forEach(function(n3) {
+              n3 && (n3.__ = u2);
+            }), P2 = 0; P2 < h2._sb.length; P2++)
+              h2.__h.push(h2._sb[P2]);
+            h2._sb = [], h2.__h.length && f2.push(h2);
+            break n;
+          }
+          null != h2.componentWillUpdate && h2.componentWillUpdate(b, h2.__s, x2), null != h2.componentDidUpdate && h2.__h.push(function() {
+            h2.componentDidUpdate(p2, _2, g2);
+          });
+        }
+        if (h2.context = x2, h2.props = b, h2.__P = n2, h2.__e = false, S2 = l.__r, I2 = 0, "prototype" in A2 && A2.prototype.render) {
+          for (h2.state = h2.__s, h2.__d = false, S2 && S2(u2), a2 = h2.render(h2.props, h2.state, h2.context), H2 = 0; H2 < h2._sb.length; H2++)
+            h2.__h.push(h2._sb[H2]);
+          h2._sb = [];
+        } else
+          do {
+            h2.__d = false, S2 && S2(u2), a2 = h2.render(h2.props, h2.state, h2.context), h2.state = h2.__s;
+          } while (h2.__d && ++I2 < 25);
+        h2.state = h2.__s, null != h2.getChildContext && (i2 = d(d({}, i2), h2.getChildContext())), v2 || null == h2.getSnapshotBeforeUpdate || (g2 = h2.getSnapshotBeforeUpdate(p2, _2)), $(n2, y(T = null != a2 && a2.type === m && null == a2.key ? a2.props.children : a2) ? T : [T], u2, t2, i2, o2, r2, f2, e2, c2, s2), h2.base = u2.__e, u2.__u &= -161, h2.__h.length && f2.push(h2), k2 && (h2.__E = h2.__ = null);
+      } catch (n3) {
+        u2.__v = null, c2 || null != r2 ? (u2.__e = e2, u2.__u |= c2 ? 160 : 32, r2[r2.indexOf(e2)] = null) : (u2.__e = t2.__e, u2.__k = t2.__k), l.__e(n3, u2, t2);
+      }
+    else
+      null == r2 && u2.__v === t2.__v ? (u2.__k = t2.__k, u2.__e = t2.__e) : u2.__e = z(t2.__e, u2, t2, i2, o2, r2, f2, c2, s2);
+  (a2 = l.diffed) && a2(u2);
+}
+function j(n2, u2, t2) {
+  u2.__d = void 0;
+  for (var i2 = 0; i2 < t2.length; i2++)
+    N(t2[i2], t2[++i2], t2[++i2]);
+  l.__c && l.__c(u2, n2), n2.some(function(u3) {
+    try {
+      n2 = u3.__h, u3.__h = [], n2.some(function(n3) {
+        n3.call(u3);
+      });
+    } catch (n3) {
+      l.__e(n3, u3.__v);
+    }
+  });
+}
+function z(l2, u2, t2, i2, o2, r2, f2, e2, c2) {
+  var s2, a2, v2, p2, d2, g2, k2, b = t2.props, m2 = u2.props, w2 = u2.type;
+  if ("svg" === w2 && (o2 = true), null != r2) {
+    for (s2 = 0; s2 < r2.length; s2++)
+      if ((d2 = r2[s2]) && "setAttribute" in d2 == !!w2 && (w2 ? d2.localName === w2 : 3 === d2.nodeType)) {
+        l2 = d2, r2[s2] = null;
+        break;
+      }
+  }
+  if (null == l2) {
+    if (null === w2)
+      return document.createTextNode(m2);
+    l2 = o2 ? document.createElementNS("http://www.w3.org/2000/svg", w2) : document.createElement(w2, m2.is && m2), r2 = null, e2 = false;
+  }
+  if (null === w2)
+    b === m2 || e2 && l2.data === m2 || (l2.data = m2);
+  else {
+    if (r2 = r2 && n.call(l2.childNodes), b = t2.props || h, !e2 && null != r2)
+      for (b = {}, s2 = 0; s2 < l2.attributes.length; s2++)
+        b[(d2 = l2.attributes[s2]).name] = d2.value;
+    for (s2 in b)
+      if (d2 = b[s2], "children" == s2)
+        ;
+      else if ("dangerouslySetInnerHTML" == s2)
+        v2 = d2;
+      else if ("key" !== s2 && !(s2 in m2)) {
+        if ("value" == s2 && "defaultValue" in m2 || "checked" == s2 && "defaultChecked" in m2)
+          continue;
+        L(l2, s2, null, d2, o2);
+      }
+    for (s2 in m2)
+      d2 = m2[s2], "children" == s2 ? p2 = d2 : "dangerouslySetInnerHTML" == s2 ? a2 = d2 : "value" == s2 ? g2 = d2 : "checked" == s2 ? k2 = d2 : "key" === s2 || e2 && "function" != typeof d2 || b[s2] === d2 || L(l2, s2, d2, b[s2], o2);
+    if (a2)
+      e2 || v2 && (a2.__html === v2.__html || a2.__html === l2.innerHTML) || (l2.innerHTML = a2.__html), u2.__k = [];
+    else if (v2 && (l2.innerHTML = ""), $(l2, y(p2) ? p2 : [p2], u2, t2, i2, o2 && "foreignObject" !== w2, r2, f2, r2 ? r2[0] : t2.__k && C(t2, 0), e2, c2), null != r2)
+      for (s2 = r2.length; s2--; )
+        null != r2[s2] && _(r2[s2]);
+    e2 || (s2 = "value", void 0 !== g2 && (g2 !== l2[s2] || "progress" === w2 && !g2 || "option" === w2 && g2 !== b[s2]) && L(l2, s2, g2, b[s2], false), s2 = "checked", void 0 !== k2 && k2 !== l2[s2] && L(l2, s2, k2, b[s2], false));
+  }
+  return l2;
+}
+function N(n2, u2, t2) {
+  try {
+    "function" == typeof n2 ? n2(u2) : n2.current = u2;
+  } catch (n3) {
+    l.__e(n3, t2);
+  }
+}
+function V(n2, u2, t2) {
+  var i2, o2;
+  if (l.unmount && l.unmount(n2), (i2 = n2.ref) && (i2.current && i2.current !== n2.__e || N(i2, null, u2)), null != (i2 = n2.__c)) {
+    if (i2.componentWillUnmount)
+      try {
+        i2.componentWillUnmount();
+      } catch (n3) {
+        l.__e(n3, u2);
+      }
+    i2.base = i2.__P = null;
+  }
+  if (i2 = n2.__k)
+    for (o2 = 0; o2 < i2.length; o2++)
+      i2[o2] && V(i2[o2], u2, t2 || "function" != typeof n2.type);
+  t2 || null == n2.__e || _(n2.__e), n2.__c = n2.__ = n2.__e = n2.__d = void 0;
+}
+function q(n2, l2, u2) {
+  return this.constructor(n2, u2);
+}
+function B(u2, t2, i2) {
+  var o2, r2, f2, e2;
+  l.__ && l.__(u2, t2), r2 = (o2 = "function" == typeof i2) ? null : i2 && i2.__k || t2.__k, f2 = [], e2 = [], O(t2, u2 = (!o2 && i2 || t2).__k = g(m, null, [u2]), r2 || h, h, void 0 !== t2.ownerSVGElement, !o2 && i2 ? [i2] : r2 ? null : t2.firstChild ? n.call(t2.childNodes) : null, f2, !o2 && i2 ? i2 : r2 ? r2.__e : t2.firstChild, o2, e2), j(f2, u2, e2);
+}
+n = v.slice, l = { __e: function(n2, l2, u2, t2) {
+  for (var i2, o2, r2; l2 = l2.__; )
+    if ((i2 = l2.__c) && !i2.__)
+      try {
+        if ((o2 = i2.constructor) && null != o2.getDerivedStateFromError && (i2.setState(o2.getDerivedStateFromError(n2)), r2 = i2.__d), null != i2.componentDidCatch && (i2.componentDidCatch(n2, t2 || {}), r2 = i2.__d), r2)
+          return i2.__E = i2;
+      } catch (l3) {
+        n2 = l3;
+      }
+  throw n2;
+} }, u = 0, t = function(n2) {
+  return null != n2 && null == n2.constructor;
+}, w.prototype.setState = function(n2, l2) {
+  var u2;
+  u2 = null != this.__s && this.__s !== this.state ? this.__s : this.__s = d({}, this.state), "function" == typeof n2 && (n2 = n2(d({}, u2), this.props)), n2 && d(u2, n2), null != n2 && this.__v && (l2 && this._sb.push(l2), P(this));
+}, w.prototype.forceUpdate = function(n2) {
+  this.__v && (this.__e = true, n2 && this.__h.push(n2), P(this));
+}, w.prototype.render = m, i = [], r = "function" == typeof Promise ? Promise.prototype.then.bind(Promise.resolve()) : setTimeout, f = function(n2, l2) {
+  return n2.__v.__b - l2.__v.__b;
+}, S.__r = 0, e = 0, c = M(false), s = M(true), a = 0;
+
+// src/utils/web-crypto-api.ts
+var DEFAULT_SETTINGS = {
+  hash: "SHA-512",
+  algorithm: "AES-GCM",
+  length: 256,
+  iterations: 25e4
+};
+function encrypt(password, content) {
+  return __async(this, null, function* () {
+    try {
+      const settings = DEFAULT_SETTINGS;
+      const salt = crypto.getRandomValues(new Uint8Array(16));
+      const key = yield deriveKey(password, salt, settings);
+      const iv = crypto.getRandomValues(new Uint8Array(12));
+      const encoded = new TextEncoder().encode(content);
+      const encrypted = yield window.crypto.subtle.encrypt({ name: settings.algorithm, iv }, key, encoded);
+      const encryptedData = {
+        version: 1,
+        settings,
+        salt: toBase64(salt),
+        iv: toBase64(iv),
+        content: toBase64(new Uint8Array(encrypted))
+      };
+      return btoa(JSON.stringify(encryptedData));
+    } catch (ignored) {
+      console.log(ignored);
+      return void 0;
+    }
+  });
+}
+function decrypt(password, encryptedData) {
+  return __async(this, null, function* () {
+    try {
+      const parsedEncryptedData = JSON.parse(atob(encryptedData));
+      const settings = parsedEncryptedData.settings;
+      const salt = base64ToUint8Array(parsedEncryptedData.salt);
+      const iv = base64ToUint8Array(parsedEncryptedData.iv);
+      const content = base64ToUint8Array(parsedEncryptedData.content);
+      if (salt && iv && content) {
+        const key = yield deriveKey(password, salt, settings);
+        const decrypted = yield window.crypto.subtle.decrypt({ name: settings.algorithm, iv }, key, content);
+        return new TextDecoder().decode(decrypted);
+      } else {
+        return void 0;
+      }
+    } catch (ignored) {
+      return void 0;
+    }
+  });
+}
+function deriveKey(password, salt, settings) {
+  return __async(this, null, function* () {
+    return crypto.subtle.deriveKey(
+      { name: "PBKDF2", salt, iterations: settings.iterations, hash: settings.hash },
+      yield crypto.subtle.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveKey"]),
+      { name: settings.algorithm, length: settings.length },
+      false,
+      ["encrypt", "decrypt"]
+    );
+  });
+}
+function toBase64(uInt8Array) {
+  return btoa(String.fromCharCode(...uInt8Array));
+}
+function base64ToUint8Array(base64) {
+  return Uint8Array.from(atob(base64), (c2) => c2.charCodeAt(0));
+}
+
+// src/components/Header.tsx
+var Header = class extends w {
+  //
+  //------------------------------------------------------------------------------------------------------------------
+  // Render
+  //------------------------------------------------------------------------------------------------------------------
+  render() {
+    return /* @__PURE__ */ g("div", { class: "Header" }, /* @__PURE__ */ g("span", null, "Just encrypt"), /* @__PURE__ */ g("span", { class: "separator" }, " | "), /* @__PURE__ */ g("span", null, "AES-256"), /* @__PURE__ */ g("span", { class: "separator" }, " | "), /* @__PURE__ */ g("span", null, /* @__PURE__ */ g("a", { href: "https://github.com/david-04/just-encrypt" }, "GitHub")));
+  }
+};
+
+// src/components/Input.tsx
+var Input = class extends w {
+  //------------------------------------------------------------------------------------------------------------------
+  // Initialization
+  //------------------------------------------------------------------------------------------------------------------
+  constructor() {
+    super();
+    __publicField(this, "previousValue", "");
+    __publicField(this, "textArea");
+    this.onChange = this.onChange.bind(this);
+  }
+  //------------------------------------------------------------------------------------------------------------------
+  // Render
+  //------------------------------------------------------------------------------------------------------------------
+  render() {
+    return /* @__PURE__ */ g("div", { class: "Input" }, /* @__PURE__ */ g("div", null, "Plain text or encrypted data"), /* @__PURE__ */ g("div", null, /* @__PURE__ */ g(
+      "textarea",
+      {
+        onInput: this.onChange,
+        ref: (element) => this.textArea = element != null ? element : void 0
+      }
+    )));
+  }
+  //------------------------------------------------------------------------------------------------------------------
+  // API
+  //------------------------------------------------------------------------------------------------------------------
+  setContent(content) {
+    const textArea = this.textArea;
+    if (textArea) {
+      textArea.value = content;
+      this.props.onChange(content);
+    }
+  }
+  //------------------------------------------------------------------------------------------------------------------
+  // Event handlers
+  //------------------------------------------------------------------------------------------------------------------
+  onChange(event) {
+    const currentValue = event.target.value;
+    if (currentValue !== this.previousValue) {
+      this.props.onChange(currentValue);
+      this.previousValue = currentValue;
+    }
+  }
+};
+
+// src/components/Output.tsx
+var ENCRYPTED = "encrypted";
+var DECRYPTED = "decrypted";
+var Output = class extends w {
+  //------------------------------------------------------------------------------------------------------------------
+  // Render
+  //------------------------------------------------------------------------------------------------------------------
+  render() {
+    return this.props.type === ENCRYPTED ? this.renderEncryptedOutput() : this.renderDecryptedOutput();
+  }
+  renderEncryptedOutput() {
+    return /* @__PURE__ */ g("div", { class: "Output" }, /* @__PURE__ */ g("div", null, "Encrypted"), /* @__PURE__ */ g("div", { class: "encrypted" }, this.renderOutputAsParagraph()));
+  }
+  renderDecryptedOutput() {
+    return /* @__PURE__ */ g("div", { class: "Output" }, /* @__PURE__ */ g("div", null, "Decrypted"), /* @__PURE__ */ g("div", null, this.renderOutputAsParagraph()));
+  }
+  renderOutputAsParagraph() {
+    return this.props.output.split(/\r?\n/).map((line) => /* @__PURE__ */ g("span", null, line, /* @__PURE__ */ g("br", null)));
+  }
+  renderOutputAsTextArea() {
+    return /* @__PURE__ */ g("textarea", { readOnly: true, value: this.props.output, rows: this.props.output.split(/\n/).length });
+  }
+};
+
+// src/components/PasswordField.tsx
+var PasswordField = class extends w {
+  //------------------------------------------------------------------------------------------------------------------
+  // Initialization
+  //------------------------------------------------------------------------------------------------------------------
+  constructor() {
+    super();
+    __publicField(this, "previousValue", "");
+    __publicField(this, "inputField", null);
+    this.onChange = this.onChange.bind(this);
+  }
+  //------------------------------------------------------------------------------------------------------------------
+  // Render
+  //------------------------------------------------------------------------------------------------------------------
+  render() {
+    return /* @__PURE__ */ g("div", { class: "PasswordField" }, /* @__PURE__ */ g("div", null, "Password"), /* @__PURE__ */ g("div", null, /* @__PURE__ */ g(
+      "input",
+      {
+        type: "password",
+        onInput: this.onChange,
+        ref: (element) => this.inputField = element
+      }
+    )));
+  }
+  //------------------------------------------------------------------------------------------------------------------
+  // API
+  //------------------------------------------------------------------------------------------------------------------
+  focus() {
+    const inputField = this.inputField;
+    if (inputField) {
+      inputField.focus();
+      setTimeout(() => inputField.selectionStart = inputField.selectionEnd = inputField.value.length, 0);
+    }
+  }
+  appendCharacter(character) {
+    const inputField = this.inputField;
+    if (inputField) {
+      inputField.value += character;
+      this.focus();
+      this.props.onChange(inputField.value);
+    }
+  }
+  //------------------------------------------------------------------------------------------------------------------
+  // Event handlers
+  //------------------------------------------------------------------------------------------------------------------
+  onChange(event) {
+    const currentValue = event.target.value.trim();
+    if (currentValue !== this.previousValue) {
+      this.props.onChange(currentValue);
+      this.previousValue = currentValue;
+    }
+  }
+};
+
+// src/components/Application.tsx
+var Application = class extends w {
+  //------------------------------------------------------------------------------------------------------------------
+  // Initialization
+  //------------------------------------------------------------------------------------------------------------------
+  constructor(props) {
+    super(props);
+    __publicField(this, "passwordField");
+    this.state = { password: "", input: "", output: void 0 };
+    this.onPasswordChange = this.onPasswordChange.bind(this);
+    this.onInputChanged = this.onInputChanged.bind(this);
+    this.recalculate = this.recalculate.bind(this);
+  }
+  render() {
+    return /* @__PURE__ */ g("div", { class: "Application" }, /* @__PURE__ */ g(Header, null), /* @__PURE__ */ g(Input, { onChange: this.onInputChanged }), /* @__PURE__ */ g(
+      PasswordField,
+      {
+        onChange: this.onPasswordChange,
+        ref: (passwordField) => this.passwordField = passwordField
+      }
+    ), this.renderOutput());
+  }
+  renderOutput() {
+    if (this.state.output) {
+      return /* @__PURE__ */ g(Output, { type: this.state.output.type, output: this.state.output.data });
+    } else if (this.state.input && this.state.password) {
+      return /* @__PURE__ */ g("div", null, "Calculating...");
+    } else {
+      return false;
+    }
+  }
+  //------------------------------------------------------------------------------------------------------------------
+  // Event handlers
+  //------------------------------------------------------------------------------------------------------------------
+  componentDidMount() {
+    var _a;
+    (_a = this.passwordField) == null ? void 0 : _a.focus();
+  }
+  onPasswordChange(password) {
+    this.setState(__spreadProps(__spreadValues({}, this.state), { password: password.trim() }), this.recalculate);
+  }
+  onInputChanged(content) {
+    this.setState(__spreadProps(__spreadValues({}, this.state), { input: content }), this.recalculate);
+  }
+  //------------------------------------------------------------------------------------------------------------------
+  // Internal functions
+  //------------------------------------------------------------------------------------------------------------------
+  recalculate() {
+    return __async(this, null, function* () {
+      const [input, password] = [this.state.input, this.state.password];
+      this.setEmptyOutput(input, password, () => __async(this, null, function* () {
+        if (password && this.state.input) {
+          const decrypted = yield decrypt(this.state.password, this.state.input);
+          if (decrypted) {
+            return this.setDecryptedOutput(input, password, decrypted);
+          }
+          const encrypted = yield encrypt(this.state.password, this.state.input);
+          if (encrypted) {
+            this.setEncryptedOutput(input, password, encrypted);
+          }
+        }
+      }));
+    });
+  }
+  setEmptyOutput(input, password, then) {
+    if (input === this.state.input && password === this.state.password) {
+      this.setState(__spreadProps(__spreadValues({}, this.state), { output: void 0 }), then);
+    }
+  }
+  setEncryptedOutput(input, password, output) {
+    if (input === this.state.input && password === this.state.password) {
+      this.setState(__spreadProps(__spreadValues({}, this.state), { output: { data: output, type: ENCRYPTED } }));
+    }
+  }
+  setDecryptedOutput(input, password, output) {
+    if (input === this.state.input && password === this.state.password) {
+      this.setState(__spreadProps(__spreadValues({}, this.state), { output: { data: output, type: DECRYPTED } }));
+    }
+  }
+};
+
+// src/web-crypto-api-test.tsx
+B(/* @__PURE__ */ g(Application, null), document.getElementById("app"));
+//# sourceMappingURL=web-crypto-api-test.js.map
+</script>
+</body>
+
+</html>
